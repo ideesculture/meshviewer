@@ -22,7 +22,9 @@ function init() {
     document.body.appendChild( container );
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-    camera.position.z = 100;
+    camera.position.z = 0;
+    camera.position.y = 0;
+    camera.position.x = 1.07;
 
     // scene
 
@@ -40,8 +42,15 @@ function init() {
     var loader = new THREE.OBJMTLLoader();
     loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
 
-        object.position.y = - 80;
         scene.add( object );
+
+        var helper = new THREE.BoundingBoxHelper(object, 0xff0000);
+        helper.update();
+        // If you want a visible bounding box
+        //scene.add(helper);
+        // If you just want the numbers
+        console.log(helper.box.min);
+        console.log(helper.box.max);
 
     } );
 
