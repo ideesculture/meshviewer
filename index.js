@@ -59,7 +59,8 @@ function init() {
     scene.add( backLight );
 
     var callbackProgress = function( progress, result ) {
-
+        console.log (progress);
+/*
         var bar = 250,
             total = progress.totalModels + progress.totalTextures,
             loaded = progress.loadedModels + progress.loadedTextures;
@@ -73,27 +74,25 @@ function init() {
         for ( var m in result.materials ) count++;
 
         handle_update( result, Math.floor( count/total ) );
-
+*/
     }
     var callbackFinished = function ( result ) {
 
         loaded = result;
 
-        document.getElementById("message").style.display = "none";
-
         handle_update( result, 1 );
 
     }
 
-    document.getElementById("progress").style.display = "block";
 
     // model
     var loader = new THREE.OBJMTLLoader();
-    loader.callbackProgress = callbackProgress;
+    loader.callbackProgress = callbackProgress();
+    loader.callbackSync = callbackProgress();
 
     //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', function ( object ) {
-    //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
-    loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', function ( object ) {
+    loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
+    //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', function ( object ) {
 
         var zAxis = new THREE.Vector3(1,0,0);
         var xAxis = new THREE.Vector3(0,1,0);

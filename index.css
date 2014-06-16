@@ -1,6 +1,6 @@
 body {
-    font-family: Monospace;
-    background-color: #000;
+    font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
+    background-color: darkgray;
     color: #fff;
     margin: 0px;
     overflow: hidden;
@@ -14,11 +14,24 @@ body {
     z-index: 100;
     display:block;
 }
-#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+#info a, .button { color: #f00; text-decoration: underline; cursor: pointer }
 
 #buttons {
     color:white;
     position:absolute;
-    top:0;
-    right:0;
+    top:20px;
+    right:10px;
+    padding:20px;
+    border-radius: 10px;
+    border:1px solid #444444;
+    background-color: #555555;
+    font-size: 8px;
+}
+#buttons div{
+    margin-top:20px;
+}
+#face-buttons-table {
+    width: 120px;
+    height: 120px;
+    background: url('assets/images/facets_120.png') no-repeat top left;
 }
