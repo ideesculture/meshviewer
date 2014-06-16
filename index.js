@@ -4,7 +4,7 @@
 
 var container, stats;
 
-var camera, scene, renderer;
+var camera, scene, renderer, controls;
 
 var mouseX = 0, mouseY = 0;
 
@@ -24,21 +24,37 @@ function init() {
     renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
 
+    scene = new THREE.Scene();
+
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
     camera.position.z = 0;
-    camera.position.y = 0;
+    camera.position.y = 0.5;
     camera.position.x = 5;
 
-    // scene
+    controls = new THREE.TrackballControls( camera );
 
-    scene = new THREE.Scene();
+    controls.rotateSpeed = 1.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.2;
+    controls.noZoom = false;
+    controls.noPan = false;
+    controls.staticMoving = false;
+    controls.dynamicDampingFactor = 0.3;
+    controls.minDistance = 1.1;
+    controls.maxDistance = 100;
+
+    controls.keys = [ 65, 83, 68 ]; // [ rotateKey, zoomKey, panKey ]
 
     var ambient = new THREE.AmbientLight( 0xaaaaaa );
     scene.add( ambient );
 
-    var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-    directionalLight.position.set( 1, 1, 0.5 ).normalize();
-    scene.add( directionalLight );
+    var frontLight = new THREE.DirectionalLight( 0xffeedd );
+    frontLight.position.set( 1, 1, 0.5 ).normalize();
+    scene.add( frontLight );
+
+    var backLight = new THREE.DirectionalLight( 0xffeedd );
+    backLight.position.set( -1, -1, 0.5 ).normalize();
+    scene.add( backLight );
 
     // model
 
@@ -63,28 +79,16 @@ function init() {
 
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
-    //
-
     window.addEventListener( 'resize', onWindowResize, false );
 
 }
 
 function onWindowResize() {
 
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 function onDocumentMouseMove( event ) {
 
-    mouseX = ( event.clientX - windowHalfX ) / 2;
-    mouseY = ( event.clientY - windowHalfY ) / 2;
 
 }
 
@@ -98,8 +102,8 @@ function animate() {
 }
 
 function render() {
-
     camera.lookAt( scene.position );
+    controls.update(); //for cameras
     renderer.render( scene, camera );
 
 }
