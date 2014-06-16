@@ -85,8 +85,12 @@ function init() {
 
     }
 
+    document.getElementById("progress").style.display = "block";
+
     // model
     var loader = new THREE.OBJMTLLoader();
+    loader.callbackProgress = callbackProgress;
+
     //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', function ( object ) {
     //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
     loader.load( 'examples/maya/mesh.obj', 'examples/maya/mesh.mtl', function ( object ) {
