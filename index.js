@@ -98,8 +98,9 @@ function animate() {
 
 function render() {
 
-    camera.position.x += ( mouseX - camera.position.x ) * .05;
-    camera.position.y += ( - mouseY - camera.position.y ) * .05;
+    camera.position.x = 1;
+    camera.position.y = 0;
+    camera.position.z = 0;
 
     camera.lookAt( scene.position );
 
