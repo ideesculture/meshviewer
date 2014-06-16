@@ -89,12 +89,12 @@ function init() {
     var loader = new THREE.OBJMTLLoader();
     //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', function ( object ) {
     //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
-    loader.load( 'examples/maya/mesh.obj', 'examples/maya/mesh.mtl', function ( object ) {
+    loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', function ( object ) {
 
         var zAxis = new THREE.Vector3(1,0,0);
         var xAxis = new THREE.Vector3(0,1,0);
         object.rotateOnAxis(zAxis, 90 * Math.PI/180);
-        object.rotateOnAxis(xAxis, -90 * Math.PI/180);
+        object.rotateOnAxis(xAxis, -180 * Math.PI/180);
 
         scene.add( object );
 
