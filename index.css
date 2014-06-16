@@ -15,3 +15,10 @@ body {
     display:block;
 }
 #info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+
+#buttons {
+    color:white;
+    position:absolute;
+    top:0;
+    right:0;
+}
