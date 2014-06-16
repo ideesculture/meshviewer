@@ -38,7 +38,7 @@ function init() {
     // model
 
     var loader = new THREE.OBJMTLLoader();
-    loader.load( 'examples/cow.obj', 'examples/cow.mtl', function ( object ) {
+    loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
 
         object.position.y = - 80;
         scene.add( object );
