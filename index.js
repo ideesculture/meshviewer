@@ -4,7 +4,7 @@
 
 var container, stats;
 
-var camera, scene, renderer, controls;
+var camera, scene, renderer, controls, boundingbox, cameratarget;
 
 var mouseX = 0, mouseY = 0;
 
@@ -17,6 +17,38 @@ var rotObjectMatrix;
 init();
 animate();
 
+function buildAxes( length ) {
+    var axes = new THREE.Object3D();
+
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), 0xFF0000, false ) ); // +X
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), 0xFF0000, true) ); // -X
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), 0x00FF00, false ) ); // +Y
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), 0x00FF00, true ) ); // -Y
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), 0x0000FF, false ) ); // +Z
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), 0x0000FF, true ) ); // -Z
+
+    return axes;
+
+}
+function buildAxis( src, dst, colorHex, dashed ) {
+    var geom = new THREE.Geometry(),
+        mat;
+
+    if(dashed) {
+        mat = new THREE.LineDashedMaterial({ linewidth: 3, color: colorHex, dashSize: 3, gapSize: 3 });
+    } else {
+        mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
+    }
+
+    geom.vertices.push( src.clone() );
+    geom.vertices.push( dst.clone() );
+    geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
+
+    var axis = new THREE.Line( geom, mat, THREE.LinePieces );
+
+    return axis;
+
+}
 
 function init() {
 
@@ -28,10 +60,10 @@ function init() {
 
     scene = new THREE.Scene();
 
+    // Add axes
+    axes = buildAxes( 1000 );
+
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-    camera.position.z = 0;
-    camera.position.y = 0.5;
-    camera.position.x = 5;
 
     controls = new THREE.TrackballControls( camera );
 
@@ -77,9 +109,7 @@ function init() {
 */
     }
     var callbackFinished = function ( result ) {
-
         loaded = result;
-
         handle_update( result, 1 );
 
     }
@@ -96,95 +126,100 @@ function init() {
 
         var zAxis = new THREE.Vector3(1,0,0);
         var xAxis = new THREE.Vector3(0,1,0);
-        object.rotateOnAxis(zAxis, 90 * Math.PI/180);
-        object.rotateOnAxis(xAxis, -180 * Math.PI/180);
+
+        // Rotation on X Axis to reflect front face as shown in Meshlab
+        object.rotateOnAxis(xAxis, 90 * Math.PI/180);
+
+        object.rotateOnAxis(zAxis, -90 * Math.PI/180);
+
 
         scene.add( object );
 
-        var helper = new THREE.BoundingBoxHelper(object, 0xff0000);
-        helper.update();
-        // If you want a visible bounding box
-        //scene.add(helper);
-        // If you just want the numbers
-        console.log(helper.box.min);
-        console.log(helper.box.max);
+        boundingbox = new THREE.BoundingBoxHelper(object, 0xff0000);
+        boundingbox.update();
 
+        // If you just want the numbers
+        console.log(boundingbox.box.min);
+        console.log(boundingbox.box.max);
+
+        camera.position.z = 0;
+        camera.position.y = boundingbox.box.max.y / 2;
+        camera.position.x = 5;
+
+        var cameratarget =  new THREE.Vector3( 0, 0, 0 );
+
+        cameratarget.z = 0;
+        cameratarget.y = boundingbox.box.max.y /2;
+        cameratarget.x = 0;
     } );
 
-    //
 
     container.appendChild( renderer.domElement );
-
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-
     window.addEventListener( 'resize', onWindowResize, false );
 
+    camera.lookAt(new THREE.Vector3(0,-1,0));
+    console.log(camera);
 }
 
 function onWindowResize() {
-
 }
 
 function onDocumentMouseMove( event ) {
-
-
 }
 
-//
-
 function animate() {
-
-
-
     requestAnimationFrame( animate );
-
-    //var xAxis = new THREE.Vector3(1,0,0);
-    //var zAxis = new THREE.Vector3(0,0,1);
-    //rotateAroundWorldAxis(object, zAxis, Math.PI / 90);
-
     render();
 }
 
 function render() {
-    camera.lookAt( scene.position );
+    //console.log(scene.position);
+    //controls.target(cameratarget);
     controls.update(); //for cameras
     renderer.render( scene, camera );
 
+
 }
 
+function buildAxes( length ) {
+    var axes = new THREE.Object3D();
 
-function rotateAroundObjectAxis(object, axis, radians) {
-    rotObjectMatrix = new THREE.Matrix4();
-    rotObjectMatrix.makeRotationAxis(axis.normalize(), radians);
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), 0xFF0000, false ) ); // +X
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), 0xFF0000, true) ); // -X
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), 0x00FF00, false ) ); // +Y
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), 0x00FF00, true ) ); // -Y
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), 0x0000FF, false ) ); // +Z
+    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), 0x0000FF, true ) ); // -Z
 
-    // old code for Three.JS pre r54:
-    // object.matrix.multiplySelf(rotObjectMatrix);      // post-multiply
-    // new code for Three.JS r55+:
-    object.matrix.multiply(rotObjectMatrix);
+    return axes;
 
-    // old code for Three.js pre r49:
-    // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
-    // new code for Three.js r50+:
-    object.rotation.setEulerFromRotationMatrix(object.matrix);
 }
 
+function buildAxis( src, dst, colorHex, dashed ) {
+    var geom = new THREE.Geometry(),
+        mat;
 
-// Rotate an object around an arbitrary axis in world space
-function rotateAroundWorldAxis(object, axis, radians) {
-    rotWorldMatrix = new THREE.Matrix4();
-    rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+    if(dashed) {
+        mat = new THREE.LineDashedMaterial({ linewidth: 3, color: colorHex, dashSize: 3, gapSize: 3 });
+    } else {
+        mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
+    }
 
-    // old code for Three.JS pre r54:
-    //  rotWorldMatrix.multiply(object.matrix);
-    // new code for Three.JS r55+:
-    rotWorldMatrix.multiply(object.matrix);                // pre-multiply
+    geom.vertices.push( src.clone() );
+    geom.vertices.push( dst.clone() );
+    geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
 
-    object.matrix = rotWorldMatrix;
+    var axis = new THREE.Line( geom, mat, THREE.LinePieces );
 
-    // old code for Three.js pre r49:
-    // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
-    // old code for Three.js pre r59:
-    // object.rotation.setEulerFromRotationMatrix(object.matrix);
-    // code for r59+:
-    object.rotation.setFromRotationMatrix(object.matrix);
+    return axis;
+
 }
+
+jQuery(document).ready(function() {
+    jQuery(".buttons-detail").hide();
+    jQuery(".buttons-header").click(function() {
+        jQuery(this).next().slideToggle();
+    });
+    jQuery("#face-buttons .buttons-detail").show();
+});

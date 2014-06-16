@@ -30,25 +30,42 @@
 <div id="progress"></div>
 
 <div id="buttons">
+    <div id="face-buttons">
+        <div class="buttons-header">VIEW</div>
+        <div class="buttons-detail">
+            <div id="face-buttons-table">
+            </div>
+        </div>
+    </div>
     <div id="rotate-buttons">
-        ROTATE<br/>
-        <img src="assets/images/sphere.png" />
+        <div class="buttons-header">ROTATE</div>
+        <div class="buttons-detail">
+            <img src="assets/images/sphere.png" />
+        </div>
     </div>
     <div id="pan-buttons">
-        PAN<br/>
-        <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_up_icon&24.png"/><br/>
-        <img src="assets/icons/24/sq_br_prev_icon&24.png"/><img src="assets/icons/24/square_shape_icon&24.png" /><img src="assets/icons/24/sq_br_next_icon&24.png"/><br/>
-        <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_down_icon&24.png"/><br/>
+        <div class="buttons-header">PAN</div>
+        <div class="buttons-detail">
+            <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_up_icon&24.png"/><br/>
+            <img src="assets/icons/24/sq_br_prev_icon&24.png"/><img src="assets/icons/24/square_shape_icon&24.png" /><img src="assets/icons/24/sq_br_next_icon&24.png"/><br/>
+            <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_down_icon&24.png"/><br/>
+        </div>
     </div>
     <div id="zoom-buttons">
-        ZOOM<br/>
-        <img src="assets/icons/24/sq_minus_icon&24.png" />
-        <img src="assets/icons/24/square_empty_icon&24.png" />
-        <img src="assets/icons/24/sq_plus_icon&24.png" /><br/>
+        <div class="buttons-header">ZOOM</div>
+        <div class="buttons-detail">
+            <img src="assets/icons/24/sq_minus_icon&24.png" />
+            <img src="assets/icons/24/square_empty_icon&24.png" />
+            <img src="assets/icons/24/sq_plus_icon&24.png" /><br/>
+        </div>
     </div>
-    <div id="face-buttons">
-        VIEW<br/>
-        <div id="face-buttons-table">
+    <div id="advanced-toggler-buttons">
+        <div class="buttons-header">AXIS & BOX</div>
+        <div class="buttons-detail">
+            <a href="javascript:scene.add(axes);">AXIS ON</a>
+            <a href="javascript:scene.remove(axes);">AXIS OFF</a><br/>
+            <a href="javascript:scene.add(boundingbox);">BBOX ON</a>
+            <a href="javascript:scene.remove(boundingbox);">BBOX OFF</a>
         </div>
     </div>
 </div>

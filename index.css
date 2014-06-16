@@ -20,18 +20,37 @@ body {
     color:white;
     position:absolute;
     top:20px;
-    right:10px;
+    right:20px;
+    width: 140px;
     padding:20px;
     border-radius: 10px;
     border:1px solid #444444;
     background-color: #555555;
     font-size: 8px;
 }
-#buttons div{
-    margin-top:20px;
+.buttons-header {
+    border-bottom: 1px solid gray;
+    cursor:pointer;
+    margin-top: 20px;
 }
+#face-buttons div {
+    margin-top: 0;
+}
+
 #face-buttons-table {
     width: 120px;
     height: 120px;
     background: url('assets/images/facets_120.png') no-repeat top left;
+}
+
+#advanced-toggler-buttons A {
+    color:white;
+    text-decoration: none;
+    border-radius:6px;
+    font-size:8px;
+    padding: 4px;
+    margin-top: 4px;
+    margin-right: 4px;
+    line-height: 20px;
+    background-color: gray;
 }
