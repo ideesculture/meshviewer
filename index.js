@@ -21,10 +21,13 @@ function init() {
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
     camera.position.z = 0;
     camera.position.y = 0;
-    camera.position.x = 1.07;
+    camera.position.x = 5;
 
     // scene
 
@@ -56,8 +59,6 @@ function init() {
 
     //
 
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
 
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -98,12 +99,7 @@ function animate() {
 
 function render() {
 
-    camera.position.x = 1;
-    camera.position.y = 0;
-    camera.position.z = 0;
-
     camera.lookAt( scene.position );
-
     renderer.render( scene, camera );
 
 }
