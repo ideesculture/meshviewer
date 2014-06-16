@@ -4,7 +4,7 @@
 
 var container, stats;
 
-var camera, scene, renderer, controls, boundingbox, cameratarget;
+var camera, scene, renderer, controls, boundingbox, sceneRadiusForCamera;
 
 var mouseX = 0, mouseY = 0;
 
@@ -142,15 +142,13 @@ function init() {
         console.log(boundingbox.box.min);
         console.log(boundingbox.box.max);
 
-        camera.position.z = 0;
-        camera.position.y = boundingbox.box.max.y / 2;
-        camera.position.x = 5;
+        // Centering object on scene center : moving Z to half eight down
+        object.translateZ(-(boundingbox.box.max.y / 2));
 
-        var cameratarget =  new THREE.Vector3( 0, 0, 0 );
+        sceneRadiusForCamera = 5;
 
-        cameratarget.z = 0;
-        cameratarget.y = boundingbox.box.max.y /2;
-        cameratarget.x = 0;
+        showFront();
+
     } );
 
 
@@ -168,6 +166,28 @@ function onWindowResize() {
 function onDocumentMouseMove( event ) {
 }
 
+function showLeft() {
+    camera.position.y = 0;
+    camera.position.x = 0;
+    camera.position.z = sceneRadiusForCamera;
+    camera.lookAt(scene.position);
+}
+
+function showRight() {
+    camera.position.y = 0;
+    camera.position.x = 0;
+    camera.position.z = -sceneRadiusForCamera;
+    camera.lookAt(scene.position);
+}
+
+function showFront() {
+    camera.position.z = 0;
+    camera.position.y = 0;
+    camera.position.x = sceneRadiusForCamera;
+    camera.lookAt(scene.position);
+}
+
+
 function animate() {
     requestAnimationFrame( animate );
     render();
@@ -175,7 +195,7 @@ function animate() {
 
 function render() {
     //console.log(scene.position);
-    //controls.target(cameratarget);
+    //controls.target(cameraTarget);
     controls.update(); //for cameras
     renderer.render( scene, camera );
 
@@ -222,4 +242,5 @@ jQuery(document).ready(function() {
         jQuery(this).next().slideToggle();
     });
     jQuery("#face-buttons .buttons-detail").show();
+
 });
