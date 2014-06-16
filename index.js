@@ -58,8 +58,34 @@ function init() {
     backLight.position.set( -1, -1, 0.5 ).normalize();
     scene.add( backLight );
 
-    // model
+    var callbackProgress = function( progress, result ) {
 
+        var bar = 250,
+            total = progress.totalModels + progress.totalTextures,
+            loaded = progress.loadedModels + progress.loadedTextures;
+
+        if ( total )
+            bar = Math.floor( bar * loaded / total );
+
+        $("bar" ).style.width = bar + "px";
+
+        count = 0;
+        for ( var m in result.materials ) count++;
+
+        handle_update( result, Math.floor( count/total ) );
+
+    }
+    var callbackFinished = function ( result ) {
+
+        loaded = result;
+
+        document.getElementById("message").style.display = "none";
+
+        handle_update( result, 1 );
+
+    }
+
+    // model
     var loader = new THREE.OBJMTLLoader();
     //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', function ( object ) {
     //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
