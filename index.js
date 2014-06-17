@@ -379,7 +379,7 @@ function zoomOut(){
  */
 
 function rotateRight(){
-    var rotSpeed = 1;
+    var rotSpeed = .2;
 
     var x = camera.position.x,
         y = camera.position.y,
@@ -392,7 +392,7 @@ function rotateRight(){
 }
 
 function rotateLeft(){
-    var rotSpeed = .02;
+    var rotSpeed = .2;
 
     var x = camera.position.x,
         y = camera.position.y,
