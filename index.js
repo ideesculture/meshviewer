@@ -4,15 +4,14 @@
 
 var container, stats;
 
-var camera, scene, renderer, controls, boundingbox, sceneRadiusForCamera;
+var camera, scene, renderer, controls, boundingbox, sceneRadiusForCamera, plinth;
+
+var size = new Array();
 
 var mouseX = 0, mouseY = 0;
 
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
-
-var rotWorldMatrix;
-var rotObjectMatrix;
 
 init();
 animate();
@@ -52,10 +51,12 @@ function buildAxis( src, dst, colorHex, dashed ) {
 
 function init() {
 
+    if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize( window.innerWidth, window.innerHeight );
 
     scene = new THREE.Scene();
@@ -121,7 +122,8 @@ function init() {
     loader.callbackSync = callbackProgress();
 
     //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', function ( object ) {
-    loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
+    loader.load( 'examples/santiago/Item.obj', 'examples/santiago/Item_Name_tex.mtl', function ( object ) {
+    //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
     //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', function ( object ) {
 
         var zAxis = new THREE.Vector3(1,0,0);
@@ -143,9 +145,26 @@ function init() {
         console.log(boundingbox.box.max);
 
         // Centering object on scene center : moving Z to half eight down
-        object.translateZ(-(boundingbox.box.max.y / 2));
+        boundingbox.update();
 
-        sceneRadiusForCamera = 5;
+        size.x = boundingbox.box.max.x - boundingbox.box.min.x;
+        size.y = boundingbox.box.max.y - boundingbox.box.min.y;
+        size.z = boundingbox.box.max.z - boundingbox.box.min.z;
+
+        // Repositioning object
+        object.position.x = -boundingbox.box.min.x - size.x/2;
+        object.position.y = -boundingbox.box.min.y - size.y/2;
+        object.position.z = -boundingbox.box.min.z - size.z/2;
+
+        boundingbox.update();
+
+        sceneRadiusForCamera = Math.max(
+            boundingbox.box.max.y - boundingbox.box.min.y,
+            boundingbox.box.max.z - boundingbox.box.min.z,
+            boundingbox.box.max.x - boundingbox.box.min.x
+        ) * (1 + Math.sqrt(5)) / 2; // golden number to beautify display
+
+        console.log(sceneRadiusForCamera);
 
         showFront();
 
@@ -164,6 +183,33 @@ function onWindowResize() {
 }
 
 function onDocumentMouseMove( event ) {
+}
+
+function addPlinth() {
+    // Calculating plinth only if button toggled for performance issue
+    if(plinth === undefined) {
+        var cubeMaterial = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0x222222, specular: 0x000512, shininess: 10, shading: THREE.FlatShading } );
+        //cubeMaterial.opacity = 0.6;
+        //cubeMaterial.transparent = true;
+        plinth = new THREE.Mesh( new THREE.BoxGeometry(
+            (size.x),
+            (size.y),
+            (size.z)
+        ), cubeMaterial );
+        console.log(plinth);
+        boundingbox.update();
+        //scene.addObject( plinth );
+        //plinth.computeBoundingBox();
+        plinth.position.y = boundingbox.box.min.y * 2;
+        plinth.name = "plinth";
+    }
+    if(!scene.getObjectByName( 'plinth', true )) {
+        //Adding plinth to scene if not already there
+        scene.add(plinth);
+    }
+}
+function removePlinth() {
+    scene.remove(plinth);
 }
 
 function showLeft() {
@@ -239,7 +285,7 @@ function buildAxis( src, dst, colorHex, dashed ) {
 jQuery(document).ready(function() {
     jQuery(".buttons-detail").hide();
     jQuery(".buttons-header").click(function() {
-        jQuery(this).next().slideToggle();
+        jQuery(this).parent().find(".buttons-detail").slideToggle();
     });
     jQuery("#face-buttons .buttons-detail").show();
 
