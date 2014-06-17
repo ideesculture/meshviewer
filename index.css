@@ -16,6 +16,17 @@ body {
     margin: 0px;
     overflow: hidden;
 }
+
+#progress {
+    position:absolute;
+    top:20px;
+    right:20px;
+    width: 140px;
+    height:20px;
+    position: absolute;
+    display: block;
+    z-index: 10;
+}
 #info {
     color:rgba(120, 120, 120, 1);
     position: absolute;
