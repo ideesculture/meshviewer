@@ -167,6 +167,7 @@ function init() {
 
         jQuery("#progress").css("display", "none");
 
+        // Copy the object to a global variable, so that it's accessible from everyWhere in this code
         objectCopy = object;
     }
 
@@ -369,6 +370,40 @@ function zoomIn(){
 function zoomOut(){
     camera.translateZ(1);
 }
+
+
+/*  ___________________________________________________________________________
+
+    Rotation (Sphere)
+    ___________________________________________________________________________
+ */
+
+function rotateRight(){
+    var rotSpeed = 1;
+
+    var x = camera.position.x,
+        y = camera.position.y,
+        z = camera.position.z;
+
+    camera.position.x = x * Math.cos(rotSpeed) - z * Math.sin(rotSpeed);
+    camera.position.z = z * Math.cos(rotSpeed) + x * Math.sin(rotSpeed);
+
+    camera.lookAt(scene.position);
+}
+
+function rotateLeft(){
+    var rotSpeed = .02;
+
+    var x = camera.position.x,
+        y = camera.position.y,
+        z = camera.position.z;
+
+    camera.position.x = x * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
+    camera.position.z = z * Math.cos(rotSpeed) - x * Math.sin(rotSpeed);
+
+    camera.lookAt(scene.position);
+}
+
 
 
 

@@ -119,6 +119,22 @@ body {
     clear: both;
 }
 
+/* Sphere */
+.sphere-button{
+    width: 25px;
+    height: 53px;
+    margin: 0;
+    float: left;
+}
+
+#sphere-button-1{
+    background: url('assets/images/sphere_01.png') no-repeat top left;
+}
+
+#sphere-button-2{
+    background: url('assets/images/sphere_02.png') no-repeat top left;
+}
+
 #advanced-toggler-buttons A {
     color:white;
     text-decoration: none;
