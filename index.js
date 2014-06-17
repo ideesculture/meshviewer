@@ -162,7 +162,7 @@ function init() {
             boundingbox.box.max.y - boundingbox.box.min.y,
             boundingbox.box.max.z - boundingbox.box.min.z,
             boundingbox.box.max.x - boundingbox.box.min.x
-        ) * (1 + Math.sqrt(5)) / 2; // golden number to beautify display
+        )/2 * (1 + Math.sqrt(5)) ; // golden number to beautify display
 
         console.log(sceneRadiusForCamera);
 
@@ -227,6 +227,7 @@ function showRight() {
 }
 
 function showFront() {
+    controls.reset();
     camera.position.z = 0;
     camera.position.y = 0;
     camera.position.x = sceneRadiusForCamera;
