@@ -121,10 +121,7 @@ function init() {
     loader.callbackProgress = callbackProgress();
     loader.callbackSync = callbackProgress();
 
-    //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', function ( object ) {
-    loader.load( 'examples/santiago/Item.obj', 'examples/santiago/Item_Name_tex.mtl', function ( object ) {
-    //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
-    //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', function ( object ) {
+    var onLoad = function(object) {
 
         var zAxis = new THREE.Vector3(1,0,0);
         var xAxis = new THREE.Vector3(0,1,0);
@@ -168,7 +165,70 @@ function init() {
 
         showFront();
 
-    } );
+    }
+
+    var onProgress = function(object) {
+        console.log(object.position);
+    }
+
+    var loadFunctionBackup = loader.load;
+
+    // Overwriting OBJMTLLoader to allow progression monitoring
+    loader.load = function ( url, mtlurl, onLoad, onProgress, onError ) {
+
+        var scope = this;
+
+
+        // Modif GM : transmiting function parameters to avoid using a defaultLoadingManager
+        //scope.manager = new THREE.LoadingManager(onLoad,onProgress,onError);
+        // End modif GM
+
+        var mtlLoader = new THREE.MTLLoader( url.substr( 0, url.lastIndexOf( "/" ) + 1 ) );
+        mtlLoader.load( mtlurl, function ( materials ) {
+
+            var materialsCreator = materials;
+            materialsCreator.preload();
+
+            var loader = new THREE.XHRLoader( scope.manager );
+            loader.setCrossOrigin( this.crossOrigin );
+            loader.load( url, function ( text ) {
+
+                var object = scope.parse( text );
+
+                object.traverse( function ( object ) {
+
+                    if ( object instanceof THREE.Mesh ) {
+
+                        if ( object.material.name ) {
+
+                            var material = materialsCreator.create( object.material.name );
+
+                            if ( material ) object.material = material;
+
+                        }
+
+                    }
+
+                } );
+
+                onLoad( object );
+
+            }, onProgress, onError );
+
+        } );
+
+    }
+
+
+    /*___________________________________________________________________________
+
+        OBJECT LOADING
+      ___________________________________________________________________________
+     */
+    //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', function ( object ) {
+    loader.load( 'examples/santiago/Item.obj', 'examples/santiago/Item_Name_tex.mtl', onLoad, onProgress);
+    //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
+    //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', function ( object ) {
 
 
     container.appendChild( renderer.domElement );
