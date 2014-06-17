@@ -4,7 +4,7 @@
 
 var container, stats;
 
-var camera, scene, renderer, controls, boundingbox, sceneRadiusForCamera, plinth;
+var camera, scene, renderer, controls, boundingbox, sceneRadiusForCamera, plinth, cubeMaterial, objectCopy;
 
 var size = new Array();
 
@@ -166,6 +166,8 @@ function init() {
         showFront();
 
         jQuery("#progress").css("display", "none");
+
+        objectCopy = object;
     }
 
     var onProgress = function(object) {
@@ -254,7 +256,7 @@ function onDocumentMouseMove( event ) {
 function addPlinth() {
     // Calculating plinth only if button toggled for performance issue
     if(plinth === undefined) {
-        var cubeMaterial = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0x222222, specular: 0x000512, shininess: 10, shading: THREE.FlatShading } );
+        cubeMaterial = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0x222222, specular: 0x000512, shininess: 10, shading: THREE.FlatShading } );
         //cubeMaterial.opacity = 0.6;
         //cubeMaterial.transparent = true;
         plinth = new THREE.Mesh( new THREE.BoxGeometry(
@@ -277,6 +279,12 @@ function addPlinth() {
 function removePlinth() {
     scene.remove(plinth);
 }
+
+/*  ___________________________________________________________________________
+
+    Object Views
+    ___________________________________________________________________________
+*/
 
 function showLeft() {
     controls.reset();
@@ -326,6 +334,44 @@ function showBottom(){
     camera.lookAt(scene.position);
 }
 
+/*  ___________________________________________________________________________
+
+    Object translation
+    ___________________________________________________________________________
+ */
+
+function translateRight(){
+    objectCopy.translateX(1);
+}
+
+function translateLeft(){
+    objectCopy.translateX(-1);
+}
+
+function translateUp(){
+    objectCopy.translateZ(1);
+}
+
+function translateDown(){
+    objectCopy.translateZ(-1);
+}
+
+/*  ___________________________________________________________________________
+
+    Zoom
+    ___________________________________________________________________________
+ */
+
+function zoomIn(){
+    camera.translateZ(-1);
+}
+
+function zoomOut(){
+    camera.translateZ(1);
+}
+
+
+
 function animate() {
     requestAnimationFrame( animate );
     render();
@@ -336,8 +382,6 @@ function render() {
     //controls.target(cameraTarget);
     controls.update(); //for cameras
     renderer.render( scene, camera );
-
-
 }
 
 function buildAxes( length ) {
