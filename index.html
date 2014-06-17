@@ -29,13 +29,25 @@
 <script src="index.js"></script>
 
 <div id="viewer"></div>
-<div id="progress">grut !</div>
+<div id="progress"></div>
 
 <div id="buttons">
     <div id="face-buttons">
         <div class="buttons-header">VIEW</div>
         <div class="buttons-detail">
-            <div id="face-buttons-table" onclick="javascript:showFront()">
+            <div id="face-buttons-table">
+                <div class="face-button" id="face-button-1"></div>
+                <div class="face-button" id="face-button-2" onclick="javascript:showTop()"></div>
+                <div class="face-button" id="face-button-3"></div>
+                <div class="clearfix"></div>
+                <div class="face-button" id="face-button-4" onclick="javascript:showLeft()"></div>
+                <div class="face-button" id="face-button-5" onclick="javascript:showFront()"></div>
+                <div class="face-button" id="face-button-6" onclick="javascript:showRight()"></div>
+                <div class="clearfix"></div>
+                <div class="face-button" id="face-button-7"></div>
+                <div class="face-button" id="face-button-8" onclick="javascript:showBottom()"></div>
+                <div class="face-button" id="face-button-9" onclick="javascript:showBack()"></div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
