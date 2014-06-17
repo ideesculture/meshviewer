@@ -231,9 +231,9 @@ function init() {
         OBJECT LOADING
       ___________________________________________________________________________
      */
-    loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', onLoad, onProgress);
+    //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', onLoad, onProgress);
     //loader.load( 'examples/santiago/Item.obj', 'examples/santiago/Item_Name_tex.mtl', onLoad, onProgress);
-    //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
+    loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', onLoad, onProgress);
     //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', onLoad, onProgress);
 
 
@@ -279,6 +279,7 @@ function removePlinth() {
 }
 
 function showLeft() {
+    controls.reset();
     camera.position.y = 0;
     camera.position.x = 0;
     camera.position.z = sceneRadiusForCamera;
@@ -286,9 +287,18 @@ function showLeft() {
 }
 
 function showRight() {
+    controls.reset();
     camera.position.y = 0;
     camera.position.x = 0;
     camera.position.z = -sceneRadiusForCamera;
+    camera.lookAt(scene.position);
+}
+
+function showBack() {
+    controls.reset();
+    camera.position.z = 0;
+    camera.position.y = 0;
+    camera.position.x = -sceneRadiusForCamera;
     camera.lookAt(scene.position);
 }
 
@@ -300,6 +310,21 @@ function showFront() {
     camera.lookAt(scene.position);
 }
 
+function showTop(){
+    controls.reset();
+    camera.position.x = 0;
+    camera.position.z = 0;
+    camera.position.y = sceneRadiusForCamera;
+    camera.lookAt(scene.position);
+}
+
+function showBottom(){
+    controls.reset();
+    camera.position.x = 0;
+    camera.position.z = 0;
+    camera.position.y = -sceneRadiusForCamera;
+    camera.lookAt(scene.position);
+}
 
 function animate() {
     requestAnimationFrame( animate );

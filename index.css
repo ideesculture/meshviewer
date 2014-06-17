@@ -70,7 +70,53 @@ body {
 #face-buttons-table {
     width: 120px;
     height: 120px;
-    background: url('assets/images/facets_120.png') no-repeat top left;
+    /*background: url('assets/images/facets_120.png') no-repeat top left;*/
+}
+
+.face-button{
+    width: 40px;
+    height: 40px;
+    float:left;
+}
+
+#face-button-1{
+    background: url('assets/images/cube-facets/facets_120_tranche_01.png') no-repeat top left;
+}
+
+#face-button-2{
+    background: url('assets/images/cube-facets/facets_120_tranche_02.png') no-repeat top left;
+}
+
+#face-button-3{
+    background: url('assets/images/cube-facets/facets_120_tranche_03.png') no-repeat top left;
+}
+
+#face-button-4{
+    background: url('assets/images/cube-facets/facets_120_tranche_04.png') no-repeat top left;
+}
+
+#face-button-5{
+    background: url('assets/images/cube-facets/facets_120_tranche_05.png') no-repeat top left;
+}
+
+#face-button-6{
+    background: url('assets/images/cube-facets/facets_120_tranche_06.png') no-repeat top left;
+}
+
+#face-button-7{
+    background: url('assets/images/cube-facets/facets_120_tranche_07.png') no-repeat top left;
+}
+
+#face-button-8{
+    background: url('assets/images/cube-facets/facets_120_tranche_08.png') no-repeat top left;
+}
+
+#face-button-9{
+    background: url('assets/images/cube-facets/facets_120_tranche_09.png') no-repeat top left;
+}
+
+.clearfix{
+    clear: both;
 }
 
 #advanced-toggler-buttons A {
