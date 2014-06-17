@@ -165,6 +165,7 @@ function init() {
 
         showFront();
 
+        jQuery("#progress").css("display", "none");
     }
 
     var onProgress = function(object) {
@@ -233,7 +234,7 @@ function init() {
     loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', onLoad, onProgress);
     //loader.load( 'examples/santiago/Item.obj', 'examples/santiago/Item_Name_tex.mtl', onLoad, onProgress);
     //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
-    //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', function ( object ) {
+    //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', onLoad, onProgress);
 
 
     container.appendChild( renderer.domElement );
