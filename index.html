@@ -33,42 +33,39 @@
     <div id="face-buttons">
         <div class="buttons-header">VIEW</div>
         <div class="buttons-detail">
-            <div id="face-buttons-table">
+            <div id="face-buttons-table" onclick="javascript:showFront()">
             </div>
         </div>
     </div>
-    <div id="rotate-buttons">
-        <div class="buttons-header">ROTATE</div>
+    <div id="advanced-buttons">
+        <div class="buttons-header">ADVANCED</div>
         <div class="buttons-detail">
-            <img src="assets/images/sphere.png" />
+            <p>ROTATE</p>
+            <div id="rotate-buttons">
+                    <img src="assets/images/sphere.png" />
+                </div>
+            <div id="pan-buttons">
+                <p>PAN</p>
+                    <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_up_icon&24.png"/><br/>
+                    <img src="assets/icons/24/sq_br_prev_icon&24.png"/><img src="assets/icons/24/square_shape_icon&24.png" /><img src="assets/icons/24/sq_br_next_icon&24.png"/><br/>
+                    <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_down_icon&24.png"/><br/>
+            </div>
+            <div id="zoom-buttons">
+                <P>ZOOM</P>
+                    <img src="assets/icons/24/sq_minus_icon&24.png" />
+                    <img src="assets/icons/24/sq_plus_icon&24.png" /><br/>
+            </div>
+            <div id="advanced-toggler-buttons">
+                <P>TOGGLERS</P>
+                    <a href="javascript:scene.add(axes);">AXIS ON</a>
+                    <a href="javascript:scene.remove(axes);">AXIS OFF</a><br/>
+                    <a href="javascript:scene.add(boundingbox);">BBOX ON</a>
+                    <a href="javascript:scene.remove(boundingbox);">BBOX OFF</a><br/>
+                    <a href="javascript:addPlinth();">PLINTH ON</a>
+                    <a href="javascript:removePlinth();">PLINTH OFF</a>
+            </div>
         </div>
     </div>
-    <div id="pan-buttons">
-        <div class="buttons-header">PAN</div>
-        <div class="buttons-detail">
-            <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_up_icon&24.png"/><br/>
-            <img src="assets/icons/24/sq_br_prev_icon&24.png"/><img src="assets/icons/24/square_shape_icon&24.png" /><img src="assets/icons/24/sq_br_next_icon&24.png"/><br/>
-            <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_down_icon&24.png"/><br/>
-        </div>
-    </div>
-    <div id="zoom-buttons">
-        <div class="buttons-header">ZOOM</div>
-        <div class="buttons-detail">
-            <img src="assets/icons/24/sq_minus_icon&24.png" />
-            <img src="assets/icons/24/square_empty_icon&24.png" />
-            <img src="assets/icons/24/sq_plus_icon&24.png" /><br/>
-        </div>
-    </div>
-    <div id="advanced-toggler-buttons">
-        <div class="buttons-header">AXIS & BOX</div>
-        <div class="buttons-detail">
-            <a href="javascript:scene.add(axes);">AXIS ON</a>
-            <a href="javascript:scene.remove(axes);">AXIS OFF</a><br/>
-            <a href="javascript:scene.add(boundingbox);">BBOX ON</a>
-            <a href="javascript:scene.remove(boundingbox);">BBOX OFF</a>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>
