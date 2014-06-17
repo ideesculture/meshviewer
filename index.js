@@ -4,7 +4,7 @@
 
 var container, stats;
 
-var camera, scene, renderer, controls, boundingbox, sceneRadiusForCamera, plinth, cubeMaterial, objectCopy;
+var camera, scene, renderer, controls, boundingbox, sceneRadiusForCamera, plinth, cubeMaterial, objectCopy, rotate;
 
 var size = new Array();
 
@@ -15,39 +15,6 @@ var windowHalfY = window.innerHeight / 2;
 
 init();
 animate();
-
-function buildAxes( length ) {
-    var axes = new THREE.Object3D();
-
-    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), 0xFF0000, false ) ); // +X
-    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), 0xFF0000, true) ); // -X
-    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), 0x00FF00, false ) ); // +Y
-    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), 0x00FF00, true ) ); // -Y
-    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), 0x0000FF, false ) ); // +Z
-    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), 0x0000FF, true ) ); // -Z
-
-    return axes;
-
-}
-function buildAxis( src, dst, colorHex, dashed ) {
-    var geom = new THREE.Geometry(),
-        mat;
-
-    if(dashed) {
-        mat = new THREE.LineDashedMaterial({ linewidth: 3, color: colorHex, dashSize: 3, gapSize: 3 });
-    } else {
-        mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
-    }
-
-    geom.vertices.push( src.clone() );
-    geom.vertices.push( dst.clone() );
-    geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
-
-    var axis = new THREE.Line( geom, mat, THREE.LinePieces );
-
-    return axis;
-
-}
 
 function init() {
 
@@ -93,22 +60,8 @@ function init() {
 
     var callbackProgress = function( progress, result ) {
         console.log (progress);
-/*
-        var bar = 250,
-            total = progress.totalModels + progress.totalTextures,
-            loaded = progress.loadedModels + progress.loadedTextures;
-
-        if ( total )
-            bar = Math.floor( bar * loaded / total );
-
-        $("bar" ).style.width = bar + "px";
-
-        count = 0;
-        for ( var m in result.materials ) count++;
-
-        handle_update( result, Math.floor( count/total ) );
-*/
     }
+
     var callbackFinished = function ( result ) {
         loaded = result;
         handle_update( result, 1 );
@@ -135,23 +88,7 @@ function init() {
         scene.add( object );
 
         boundingbox = new THREE.BoundingBoxHelper(object, 0xff0000);
-        boundingbox.update();
 
-        // If you just want the numbers
-        console.log(boundingbox.box.min);
-        console.log(boundingbox.box.max);
-
-        // Centering object on scene center : moving Z to half eight down
-        boundingbox.update();
-
-        size.x = boundingbox.box.max.x - boundingbox.box.min.x;
-        size.y = boundingbox.box.max.y - boundingbox.box.min.y;
-        size.z = boundingbox.box.max.z - boundingbox.box.min.z;
-
-        // Repositioning object
-        object.position.x = -boundingbox.box.min.x - size.x/2;
-        object.position.y = -boundingbox.box.min.y - size.y/2;
-        object.position.z = -boundingbox.box.min.z - size.z/2;
 
         boundingbox.update();
 
@@ -169,6 +106,8 @@ function init() {
 
         // Copy the object to a global variable, so that it's accessible from everyWhere in this code
         objectCopy = object;
+
+        resetObjectPosition();
     }
 
     var onProgress = function(object) {
@@ -184,50 +123,31 @@ function init() {
 
     // Overwriting OBJMTLLoader to allow progression monitoring
     loader.load = function ( url, mtlurl, onLoad, onProgress, onError ) {
-
         var scope = this;
-
-
-        // Modif GM : transmiting function parameters to avoid using a defaultLoadingManager
-        //scope.manager = new THREE.LoadingManager(onLoad,onProgress,onError);
-        // End modif GM
-
         var mtlLoader = new THREE.MTLLoader( url.substr( 0, url.lastIndexOf( "/" ) + 1 ) );
-        mtlLoader.load( mtlurl, function ( materials ) {
 
+        mtlLoader.load( mtlurl, function ( materials ) {
             var materialsCreator = materials;
             materialsCreator.preload();
-
             var loader = new THREE.XHRLoader( scope.manager );
             loader.setCrossOrigin( this.crossOrigin );
+            // Overwriting OBJMTLLoader to allow progression monitoring : adding onProgress & onError to loader.load function
             loader.load( url, function ( text ) {
-
                 var object = scope.parse( text );
-
                 object.traverse( function ( object ) {
-
                     if ( object instanceof THREE.Mesh ) {
-
                         if ( object.material.name ) {
-
                             var material = materialsCreator.create( object.material.name );
-
                             if ( material ) object.material = material;
-
                         }
-
                     }
-
                 } );
-
                 onLoad( object );
-
             }, onProgress, onError );
 
         } );
 
     }
-
 
     /*___________________________________________________________________________
 
@@ -236,11 +156,7 @@ function init() {
      */
 
     var example = document.getElementById("objectView").getAttribute("data-example");
-    //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', onLoad, onProgress);
-    //loader.load( 'examples/santiago/mesh.obj', 'examples/santiago/mesh.mtl', onLoad, onProgress);
     loader.load( 'examples/' +example+ '/mesh.obj', 'examples/' +example+ '/mesh.mtl', onLoad, onProgress);
-    //loader.load( 'examples/mask/mesh.obj', 'examples/mask/mesh.mtl', onLoad, onProgress);
-
 
     container.appendChild( renderer.domElement );
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -279,6 +195,7 @@ function addPlinth() {
         scene.add(plinth);
     }
 }
+
 function removePlinth() {
     scene.remove(plinth);
 }
@@ -290,6 +207,7 @@ function removePlinth() {
 */
 
 function showLeft() {
+    if (objectCopy !== undefined) objectCopy.rotation.z =  0;
     controls.reset();
     camera.position.y = 0;
     camera.position.x = 0;
@@ -298,6 +216,7 @@ function showLeft() {
 }
 
 function showRight() {
+    if (objectCopy !== undefined) objectCopy.rotation.z =  0;
     controls.reset();
     camera.position.y = 0;
     camera.position.x = 0;
@@ -306,6 +225,7 @@ function showRight() {
 }
 
 function showBack() {
+    if (objectCopy !== undefined) objectCopy.rotation.z =  0;
     controls.reset();
     camera.position.z = 0;
     camera.position.y = 0;
@@ -314,6 +234,7 @@ function showBack() {
 }
 
 function showFront() {
+    if (objectCopy !== undefined) objectCopy.rotation.z =  0;
     controls.reset();
     camera.position.z = 0;
     camera.position.y = 0;
@@ -322,6 +243,7 @@ function showFront() {
 }
 
 function showTop(){
+    if (objectCopy !== undefined) objectCopy.rotation.z =  0;
     controls.reset();
     camera.position.x = 0;
     camera.position.z = 0;
@@ -330,6 +252,7 @@ function showTop(){
 }
 
 function showBottom(){
+    if (objectCopy !== undefined) objectCopy.rotation.z =  0;
     controls.reset();
     camera.position.x = 0;
     camera.position.z = 0;
@@ -359,6 +282,30 @@ function translateDown(){
     objectCopy.translateZ(-1);
 }
 
+function translateReset(){
+    resetObjectPosition();
+}
+
+function resetObjectPosition(){
+    boundingbox.update();
+
+    // If you just want the numbers
+    console.log(boundingbox.box.min);
+    console.log(boundingbox.box.max);
+
+    size.x = boundingbox.box.max.x - boundingbox.box.min.x;
+    size.y = boundingbox.box.max.y - boundingbox.box.min.y;
+    size.z = boundingbox.box.max.z - boundingbox.box.min.z;
+
+    // Repositioning object
+    objectCopy.position.x = -boundingbox.box.min.x - size.x/2;
+    objectCopy.position.y = -boundingbox.box.min.y - size.y/2;
+    objectCopy.position.z = -boundingbox.box.min.z - size.z/2;
+    boundingbox.update();
+    if (objectCopy !== undefined) objectCopy.rotation.z =  0;
+
+}
+
 /*  ___________________________________________________________________________
 
     Zoom
@@ -372,7 +319,6 @@ function zoomIn(){
 function zoomOut(){
     camera.translateZ(1);
 }
-
 
 /*  ___________________________________________________________________________
 
@@ -406,15 +352,15 @@ function rotateLeft(){
     camera.lookAt(scene.position);
 }
 
-
-
-
 function animate() {
     requestAnimationFrame( animate );
     render();
 }
 
 function render() {
+    if(rotate) {
+        objectCopy.rotation.z += 0.01;
+    }
     //console.log(scene.position);
     //controls.target(cameraTarget);
     controls.update(); //for cameras
@@ -454,6 +400,16 @@ function buildAxis( src, dst, colorHex, dashed ) {
     return axis;
 
 }
+
+function rotateOn(){
+    rotate = true;
+}
+
+function rotateOff(){
+    rotate = false;
+}
+
+
 
 jQuery(document).ready(function() {
     jQuery(".buttons-detail").hide();
