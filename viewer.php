@@ -74,7 +74,7 @@
             <div id="pan-buttons">
                 <p>PAN</p>
                     <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_up_icon&24.png" onclick="javascript:translateUp()"/><br/>
-                    <img src="assets/icons/24/sq_br_prev_icon&24.png" onclick="javascript:translateLeft()"/><img src="assets/icons/24/square_shape_icon&24.png" /><img src="assets/icons/24/sq_br_next_icon&24.png" onclick="javascript:translateRight()"/><br/>
+                    <img src="assets/icons/24/sq_br_prev_icon&24.png" onclick="javascript:translateLeft()"/><img src="assets/icons/24/square_shape_icon&24.png" onclick="javascript:translateReset()"/><img src="assets/icons/24/sq_br_next_icon&24.png" onclick="javascript:translateRight()"/><br/>
                     <img src="assets/icons/24/square_empty_icon&24.png" /><img src="assets/icons/24/sq_br_down_icon&24.png" onclick="javascript:translateDown()"/><br/>
             </div>
             <div id="zoom-buttons">
@@ -84,12 +84,14 @@
             </div>
             <div id="advanced-toggler-buttons">
                 <P>TOGGLERS</P>
-                    <a href="javascript:scene.add(axes);">AXIS ON</a>
-                    <a href="javascript:scene.remove(axes);">AXIS OFF</a><br/>
-                    <a href="javascript:scene.add(boundingbox);">BBOX ON</a>
-                    <a href="javascript:scene.remove(boundingbox);">BBOX OFF</a><br/>
-                    <a href="javascript:addPlinth();">PLINTH ON</a>
-                    <a href="javascript:removePlinth();">PLINTH OFF</a>
+                <a href="javascript:scene.add(axes);">AXIS ON</a>
+                <a href="javascript:scene.remove(axes);">AXIS OFF</a><br/>
+                <a href="javascript:scene.add(boundingbox);">BBOX ON</a>
+                <a href="javascript:scene.remove(boundingbox);">BBOX OFF</a><br/>
+                <a href="javascript:addPlinth();">PLINTH ON</a>
+                <a href="javascript:removePlinth();">PLINTH OFF</a><br/>
+                <a href="javascript:rotateOn();">ROTATE ON</a>
+                <a href="javascript:rotateOff();">ROTATE OFF</a>
             </div>
         </div>
     </div>
