@@ -1,37 +1,53 @@
 body {
     font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
     background-color: darkgray;
-    color: #fff;
+    background-image: -webkit-gradient(
+        linear,
+        right bottom,
+        right top,
+        color-stop(0, #949494),
+        color-stop(0.72, #E3E3E3)
+    );
+    background-image: -o-linear-gradient(top, #949494 0%, #E3E3E3 72%);
+    background-image: -moz-linear-gradient(top, #949494 0%, #E3E3E3 72%);
+    background-image: -webkit-linear-gradient(top, #949494 0%, #E3E3E3 72%);
+    background-image: -ms-linear-gradient(top, #949494 0%, #E3E3E3 72%);
+    background-image: linear-gradient(to top, #949494 0%, #E3E3E3 72%);
     margin: 0px;
     overflow: hidden;
 }
 #info {
-    color: #fff;
+    color:rgba(120, 120, 120, 1);
     position: absolute;
-    top: 10px;
+    top: 20px;
+    left:20px;
     width: 100%;
-    text-align: center;
+    text-align: left;
+
     z-index: 100;
     display:block;
 }
 #info a, .button { color: #f00; text-decoration: underline; cursor: pointer }
 
 #buttons {
-    color:white;
     position:absolute;
-    top:20px;
+    bottom:20px;
     right:20px;
     width: 140px;
     padding:20px;
     border-radius: 10px;
-    border:1px solid #444444;
-    background-color: #555555;
-    font-size: 8px;
+    color:rgba(120, 120, 120, 1);
+    border:1px solid rgba(150, 150, 150, 0.8);
+    background-color: rgba(170, 170, 170, 0.6);
 }
 .buttons-header {
     border-bottom: 1px solid gray;
     cursor:pointer;
     margin-top: 20px;
+    font-size:11px;
+}
+#buttons p {
+    font-size:10px;
 }
 #face-buttons div {
     margin-top: 0;
