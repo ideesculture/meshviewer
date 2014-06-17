@@ -168,7 +168,12 @@ function init() {
     }
 
     var onProgress = function(object) {
-        console.log(object.position);
+        var progression = (object.position / object.totalSize) * 100;
+        jQuery("#progress").progressbar({
+            value: progression
+        });
+
+        console.log(object.totalSize + " " + object.position + " " + progression);
     }
 
     var loadFunctionBackup = loader.load;
@@ -225,8 +230,8 @@ function init() {
         OBJECT LOADING
       ___________________________________________________________________________
      */
-    //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', function ( object ) {
-    loader.load( 'examples/santiago/Item.obj', 'examples/santiago/Item_Name_tex.mtl', onLoad, onProgress);
+    loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', onLoad, onProgress);
+    //loader.load( 'examples/santiago/Item.obj', 'examples/santiago/Item_Name_tex.mtl', onLoad, onProgress);
     //loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', function ( object ) {
     //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', function ( object ) {
 
