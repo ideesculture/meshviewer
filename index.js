@@ -234,10 +234,12 @@ function init() {
         OBJECT LOADING
       ___________________________________________________________________________
      */
+
+    var example = document.getElementById("objectView").getAttribute("data-example");
     //loader.load( 'examples/rivergod/mesh.obj', 'examples/rivergod/mesh.mtl', onLoad, onProgress);
-    //loader.load( 'examples/santiago/Item.obj', 'examples/santiago/Item_Name_tex.mtl', onLoad, onProgress);
-    loader.load( 'examples/cow.obj', 'examples/cow.obj.mtl', onLoad, onProgress);
-    //loader.load( 'examples/mask/mesh.obj', 'examples/mask/tex.mtl', onLoad, onProgress);
+    //loader.load( 'examples/santiago/mesh.obj', 'examples/santiago/mesh.mtl', onLoad, onProgress);
+    loader.load( 'examples/' +example+ '/mesh.obj', 'examples/' +example+ '/mesh.mtl', onLoad, onProgress);
+    //loader.load( 'examples/mask/mesh.obj', 'examples/mask/mesh.mtl', onLoad, onProgress);
 
 
     container.appendChild( renderer.domElement );
