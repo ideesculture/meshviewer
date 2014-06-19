@@ -16,12 +16,15 @@
     <div id="info">
         Three.js OBJ viewer
     </div>
-    <ul>Examples :
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/cow/mesh.obj','mtlFile' : 'examples/cow/mesh.mtl', 'container':'#viewer'})">Cow</a></li>
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/rivergod/mesh.obj','mtlFile' : 'examples/rivergod/mesh.mtl', 'container':'#viewer'})">RiverGod</a></li>
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/santiago/mesh.obj','mtlFile' : 'examples/santiago/mesh.mtl', 'container':'#viewer'})">Santiago</a></li>
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/mask/mesh.obj','mtlFile' : 'examples/mask/mesh.mtl', 'container':'#viewer'})">IndianMask</a></li>
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/maya/mesh.obj','mtlFile' : 'examples/maya/mesh.mtl', 'container':'#viewer'})">Maya</a></li>
+    <ul>Examples OBJ:
+        <li><a href="javascript:meshviewer({'objFile' : 'examples/cow/mesh.obj','mtlFile' : 'examples/cow/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Cow</a></li>
+        <li><a href="javascript:meshviewer({'objFile' : 'examples/rivergod/mesh.obj','mtlFile' : 'examples/rivergod/mesh.mtl', 'container':'#viewer', 'format':'obj'})">RiverGod</a></li>
+        <li><a href="javascript:meshviewer({'objFile' : 'examples/santiago/mesh.obj','mtlFile' : 'examples/santiago/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Santiago</a></li>
+        <li><a href="javascript:meshviewer({'objFile' : 'examples/mask/mesh.obj','mtlFile' : 'examples/mask/mesh.mtl', 'container':'#viewer', 'format':'obj'})">IndianMask</a></li>
+        <li><a href="javascript:meshviewer({'objFile' : 'examples/maya/mesh.obj','mtlFile' : 'examples/maya/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Maya</a></li>
+    </ul>
+    <ul>Exemples CTM:
+        <li><a href="javascript:meshviewer({'ctmFile' : 'examples/ark/ark.ctm', 'container':'#viewer', 'format':'ctm'})">Ark</a></li>
     </ul>
 </div>
 
@@ -33,6 +36,8 @@
 
     <script src="lib/threejs/loaders/MTLLoader.js"></script>
     <script src="lib/threejs/loaders/OBJMTLLoader.js"></script>
+
+    <script src="lib/threejs/loaders/ctm/CTMLoader.js"></script>
 
     <script src="lib/threejs/Detector.js"></script>
     <script src="lib/threejs/TrackballControls.js"></script>

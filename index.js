@@ -71,9 +71,20 @@ function init(settings) {
 
 
     // model
-    var loader = new THREE.OBJMTLLoader();
-    loader.callbackProgress = callbackProgress();
-    loader.callbackSync = callbackProgress();
+    switch (settings.format){
+        case 'obj':
+            var loader = new THREE.OBJMTLLoader();
+            loader.callbackProgress = callbackProgress();
+            loader.callbackSync = callbackProgress();
+
+            break;
+        case 'ctm' :
+            var loader = new THREE.CTMLoader();
+            break;
+    }
+
+
+
 
     var onLoad = function(object) {
 
@@ -134,34 +145,9 @@ function init(settings) {
         jQuery("#weight").html(object.totalSize);
     }
 
-    var loadFunctionBackup = loader.load;
 
-    // Overwriting OBJMTLLoader to allow progression monitoring
-    loader.load = function ( url, mtlurl, onLoad, onProgress, onError ) {
-        var scope = this;
-        var mtlLoader = new THREE.MTLLoader( url.substr( 0, url.lastIndexOf( "/" ) + 1 ) );
 
-        mtlLoader.load( mtlurl, function ( materials ) {
-            var materialsCreator = materials;
-            materialsCreator.preload();
-            var loader = new THREE.XHRLoader( scope.manager );
-            loader.setCrossOrigin( this.crossOrigin );
-            // Overwriting OBJMTLLoader to allow progression monitoring : adding onProgress & onError to loader.load function
-            loader.load( url, function ( text ) {
-                var object = scope.parse( text );
-                object.traverse( function ( object ) {
-                    if ( object instanceof THREE.Mesh ) {
-                        if ( object.material.name ) {
-                            var material = materialsCreator.create( object.material.name );
-                            if ( material ) object.material = material;
-                        }
-                    }
-                } );
-                onLoad( object );
-            }, onProgress, onError );
 
-        } );
-    }
 
     /*___________________________________________________________________________
 
@@ -169,7 +155,59 @@ function init(settings) {
       ___________________________________________________________________________
      */
 
-    loader.load( settings.objFile, settings.mtlFile, onLoad, onProgress);
+    switch (settings.format){
+        case 'ctm':
+            loader.load( settings.ctmFile,   function( geometry ) {
+
+                console.log(settings.ctmFile);
+
+                var material1 = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+                var material2 = new THREE.MeshPhongMaterial( { color: 0xff4400, specular: 0x333333, shininess: 100 } );
+                var material3 = new THREE.MeshPhongMaterial( { color: 0x00ff44, specular: 0x333333, shininess: 100 } );
+
+                callbackModel( geometry, 5, material1, -200, 0, -50, 0, 0 );
+                callbackModel( geometry, 2, material2,  100, 0, 125, 0, 0 );
+                callbackModel( geometry, 2, material3, -100, 0, 125, 0, 0 );
+
+
+            }, { useWorker: true } );
+            break;
+
+        case 'obj':
+            // Overwriting OBJMTLLoader to allow progression monitoring
+            loader.load = function ( url, mtlurl, onLoad, onProgress, onError ) {
+                var scope = this;
+                var mtlLoader = new THREE.MTLLoader( url.substr( 0, url.lastIndexOf( "/" ) + 1 ) );
+
+                mtlLoader.load( mtlurl, function ( materials ) {
+                    var materialsCreator = materials;
+                    materialsCreator.preload();
+                    var loader = new THREE.XHRLoader( scope.manager );
+                    loader.setCrossOrigin( this.crossOrigin );
+                    // Overwriting OBJMTLLoader to allow progression monitoring : adding onProgress & onError to loader.load function
+                    loader.load( url, function ( text ) {
+                        var object = scope.parse( text );
+                        object.traverse( function ( object ) {
+                            if ( object instanceof THREE.Mesh ) {
+                                if ( object.material.name ) {
+                                    var material = materialsCreator.create( object.material.name );
+                                    if ( material ) object.material = material;
+                                }
+                            }
+                        } );
+                        onLoad( object );
+                    }, onProgress, onError );
+
+                } );
+            }
+
+            var loadFunctionBackup = loader.load;
+
+            loader.load( settings.objFile, settings.mtlFile, onLoad, onProgress);
+            break;
+    }
+
+
 
     jQuery(settings.container).html("");
     jQuery(settings.container).append(renderer.domElement);
