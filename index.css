@@ -22,7 +22,6 @@ body {
 }
 
 #progress {
-    position:absolute;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -30,9 +29,8 @@ body {
     margin-left: -50px;
     width: 140px;
     height:20px;
-    position: absolute;
     display: block;
-    z-index: 10;
+    z-index: 100;
 }
 #info {
     color:rgba(120, 120, 120, 1);

@@ -104,7 +104,7 @@ function init(settings) {
         showFront();
 
 
-        jQuery("#progress").css("display", "none");
+        jQuery("#progress").hide();
 
         // Copy the object to a global variable, so that it's accessible from everyWhere in this code
         objectCopy = object;
@@ -112,24 +112,26 @@ function init(settings) {
         resetObjectPosition();
     }
 
-
     var onProgress = function(object) {
         var progression = (object.position / object.totalSize) * 100;
 
-        jQuery("#progress").progressbar({
-            value: progression
-        });
+        jQuery("#progress").show();
+
+        if(progression > 85){
+            jQuery("#progress").progressbar({
+                value: false
+            });
+        }else{
+
+            jQuery("#progress").progressbar({
+                value: progression
+            });
+        }
 
         console.log(object.totalSize + " " + object.position + " " + progression);
 
         jQuery("#timer").html(Date.now() - timer);
         jQuery("#weight").html(object.totalSize);
-    }
-
-    var onLoad = function(object){
-        jQuery("#progress").progressbar({
-            value: false
-        });
     }
 
     var loadFunctionBackup = loader.load;
@@ -159,7 +161,6 @@ function init(settings) {
             }, onProgress, onError );
 
         } );
-
     }
 
     /*___________________________________________________________________________
