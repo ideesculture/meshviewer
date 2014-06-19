@@ -1,3 +1,6 @@
+html{
+    height: 100%;
+}
 body {
     font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
     background-color: darkgray;
@@ -15,10 +18,10 @@ body {
     background-image: linear-gradient(to top, #949494 0%, #E3E3E3 72%);
     margin: 0px;
     overflow: hidden;
+    min-height: 100%;
 }
 
 #progress {
-    position:absolute;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -26,20 +29,15 @@ body {
     margin-left: -50px;
     width: 140px;
     height:20px;
-    position: absolute;
     display: block;
-    z-index: 10;
+    z-index: 100;
 }
 #info {
     color:rgba(120, 120, 120, 1);
-    position: absolute;
-    top: 20px;
-    left:20px;
     width: 100%;
     text-align: left;
 
     z-index: 100;
-    display:block;
 }
 #info a, .button { color: #f00; text-decoration: underline; cursor: pointer }
 
@@ -145,4 +143,37 @@ body {
     margin-right: 4px;
     line-height: 20px;
     background-color: gray;
+}
+
+
+#leftMenu{
+    width:20%;
+    float:left;
+    display:block;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 10px;
+}
+
+#leftMenu a{
+    color: #000000;
+}
+
+#mainViewer{
+
+}
+
+#timer{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#weight{
+    position: absolute;
+    top: 45px;
+    right: 20px;
 }
