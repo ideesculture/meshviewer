@@ -13,10 +13,14 @@ var mouseX = 0, mouseY = 0;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 
-init();
-animate();
 
-function init() {
+
+function meshviewer(settings){
+    init(settings);
+    animate(settings);
+}
+
+function init(settings) {
 
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
@@ -352,7 +356,7 @@ function rotateLeft(){
     camera.lookAt(scene.position);
 }
 
-function animate() {
+function animate(settings) {
     requestAnimationFrame( animate );
     render();
 }
