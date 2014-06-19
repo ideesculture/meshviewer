@@ -96,5 +96,11 @@
         </div>
     </div>
 
+    <script>
+        var settings = {
+            'objFile' : 'examples/cow/mesh.obj',
+            'mtlFile' : 'examples/cow/mesh.mtl' };
+        meshviewer(settings);
+    </script>
 </body>
 </html>

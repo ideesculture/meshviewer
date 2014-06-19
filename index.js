@@ -160,7 +160,7 @@ function init(settings) {
      */
 
     var example = document.getElementById("objectView").getAttribute("data-example");
-    loader.load( 'examples/' +example+ '/mesh.obj', 'examples/' +example+ '/mesh.mtl', onLoad, onProgress);
+    loader.load( settings.objFile, settings.mtlFile, onLoad, onProgress);
 
     container.appendChild( renderer.domElement );
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
