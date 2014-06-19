@@ -13,7 +13,7 @@ var mouseX = 0, mouseY = 0;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 
-
+var timer, weight;
 
 function meshviewer(settings){
     init(settings);
@@ -21,11 +21,8 @@ function meshviewer(settings){
 }
 
 function init(settings) {
-
+    timer = Date.now();
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
 
     renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -106,6 +103,7 @@ function init(settings) {
 
         showFront();
 
+
         jQuery("#progress").css("display", "none");
 
         // Copy the object to a global variable, so that it's accessible from everyWhere in this code
@@ -114,13 +112,24 @@ function init(settings) {
         resetObjectPosition();
     }
 
+
     var onProgress = function(object) {
         var progression = (object.position / object.totalSize) * 100;
+
         jQuery("#progress").progressbar({
             value: progression
         });
 
         console.log(object.totalSize + " " + object.position + " " + progression);
+
+        jQuery("#timer").html(Date.now() - timer);
+        jQuery("#weight").html(object.totalSize);
+    }
+
+    var onLoad = function(object){
+        jQuery("#progress").progressbar({
+            value: false
+        });
     }
 
     var loadFunctionBackup = loader.load;
@@ -159,10 +168,10 @@ function init(settings) {
       ___________________________________________________________________________
      */
 
-    var example = document.getElementById("objectView").getAttribute("data-example");
     loader.load( settings.objFile, settings.mtlFile, onLoad, onProgress);
 
-    container.appendChild( renderer.domElement );
+    jQuery(settings.container).html("");
+    jQuery(settings.container).append(renderer.domElement);
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
     window.addEventListener( 'resize', onWindowResize, false );
 
