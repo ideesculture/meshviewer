@@ -69,23 +69,6 @@ function init(settings) {
 
     }
 
-
-    // model
-    switch (settings.format){
-        case 'obj':
-            var loader = new THREE.OBJMTLLoader();
-            loader.callbackProgress = callbackProgress();
-            loader.callbackSync = callbackProgress();
-
-            break;
-        case 'ctm' :
-            var loader = new THREE.CTMLoader();
-            break;
-    }
-
-
-
-
     var onLoad = function(object) {
 
         var zAxis = new THREE.Vector3(1,0,0);
@@ -146,9 +129,6 @@ function init(settings) {
     }
 
 
-
-
-
     /*___________________________________________________________________________
 
         OBJECT LOADING
@@ -157,6 +137,7 @@ function init(settings) {
 
     switch (settings.format){
         case 'ctm':
+            var loader = new THREE.CTMLoader();
             loader.load( settings.ctmFile,   function( geometry ) {
 
                 console.log(settings.ctmFile);
@@ -174,6 +155,10 @@ function init(settings) {
             break;
 
         case 'obj':
+            var loader = new THREE.OBJMTLLoader();
+            loader.callbackProgress = callbackProgress();
+            loader.callbackSync = callbackProgress();
+
             // Overwriting OBJMTLLoader to allow progression monitoring
             loader.load = function ( url, mtlurl, onLoad, onProgress, onError ) {
                 var scope = this;
