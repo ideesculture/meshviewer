@@ -1,7 +1,11 @@
 # 3jsObjViewer
 ============
 
-3D OBJ file viewer in Three.JS (WebGL)
+Simple 3D objects file viewer in Three.JS (WebGL)
+
+## Target
+
+The objective is to create a simple object viewer that can well handle low-rez 3d meshes & textures for CollectiveAccess.
 
 ## Howto 
 
