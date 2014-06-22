@@ -3,9 +3,6 @@
 
 3D OBJ file viewer in Three.JS (WebGL)
 
-## Credits
-Icons : [Gentleface](http://www.gentleface.com/free_icon_set.html) licence Creative Commons Attribution-NonCommercial
-
 ## Howto 
 
 This viewer is easy to handle, give the path to the obj & mtl files, the ID where you want the viewer to be in, eventually a format if it can't be guessed
@@ -23,3 +20,6 @@ meshviewer({
 ```
 
 See index.html for more informations.
+
+## Credits
+Icons : [Gentleface](http://www.gentleface.com/free_icon_set.html) licence Creative Commons Attribution-NonCommercial
