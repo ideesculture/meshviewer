@@ -14,14 +14,25 @@
 <body>
 <div id="leftMenu">
     <div id="info">
-        Three.js OBJ viewer
+        <a href="javascript:jQuery('#viewer').empty()">Three.js OBJ viewer</a>
     </div>
-    <ul>Examples OBJ:
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/cow/mesh.obj','mtlFile' : 'examples/cow/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Cow</a></li>
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/rivergod/mesh.obj','mtlFile' : 'examples/rivergod/mesh.mtl', 'container':'#viewer', 'format':'obj'})">RiverGod</a></li>
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/santiago/mesh.obj','mtlFile' : 'examples/santiago/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Santiago</a></li>
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/mask/mesh.obj','mtlFile' : 'examples/mask/mesh.mtl', 'container':'#viewer', 'format':'obj'})">IndianMask</a></li>
-        <li><a href="javascript:meshviewer({'objFile' : 'examples/maya/mesh.obj','mtlFile' : 'examples/maya/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Maya</a></li>
+    <ul>Exemples OBJ :
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/cow/mesh.obj','mtlFile' : 'examples/cow/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Cow</a></li>
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/rivergod/mesh.obj','mtlFile' : 'examples/rivergod/mesh.mtl', 'container':'#viewer', 'format':'obj'})">RiverGod</a></li>
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/santiago/mesh.obj','mtlFile' : 'examples/santiago/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Santiago</a></li>
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/mask/mesh.obj','mtlFile' : 'examples/mask/mesh.mtl', 'container':'#viewer', 'format':'obj'})">IndianMask</a></li>
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/maya/mesh.obj','mtlFile' : 'examples/maya/mesh.mtl', 'container':'#viewer', 'format':'obj'})">Maya</a></li>
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/head/sculpt.obj','mtlFile' : 'examples/head/sculpt.mtl', 'container':'#viewer', 'format':'obj'})">Head</a></li>
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/egyptian/sculpt.obj','mtlFile' : 'examples/egyptian/Autodesk123DSculpt.mtl', 'container':'#viewer', 'format':'obj'})">Egyptian</a></li>
+    </ul>
+    <ul>Exemples CTM :
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/rivergod/mesh.ctm','container':'#viewer', 'format':'ctm'})">RiverGod</a></li>
+    </ul>
+    <ul>Exemples JSON/BIN :
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/head/sculpt_bin.bin','container':'#viewer', 'format':'jsonbin'})">Head</a></li>
+    </ul>
+    <ul>Exemples JSON :
+        <li><a href="javascript:meshviewer({'meshFile' : 'examples/head/sculpt_ascii.js','container':'#viewer', 'format':'json'})">Head</a></li>
     </ul>
 </div>
 
@@ -29,8 +40,9 @@
 
     <script src="lib/jquery/jquery.min.js"></script>
     <script src="lib/jquery-ui/jquery-ui.min.js"></script>
-    <script src="lib/threejs/three.js"></script>
+    <script src="lib/threejs/three.min.js"></script>
 
+    <script src="lib/threejs/loaders/BinaryLoader.js"></script>
     <script src="lib/threejs/loaders/MTLLoader.js"></script>
     <script src="lib/threejs/loaders/OBJMTLLoader.js"></script>
 
@@ -105,7 +117,7 @@
 
     <script>
         var settings = {
-            'objFile' : 'examples/cow/mesh.obj',
+            'meshFile' : 'examples/cow/mesh.obj',
             'mtlFile' : 'examples/cow/mesh.mtl' };
         meshviewer(settings);
     </script>

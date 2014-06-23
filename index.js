@@ -138,22 +138,29 @@ function init(settings) {
     switch (settings.format){
         case 'ctm':
             var loader = new THREE.CTMLoader();
-            loader.load( settings.ctmFile,   function( geometry ) {
+            loader.load( settings.meshFile,   function( geometry ) {
 
-                console.log(settings.ctmFile);
+                console.log(settings.meshFile);
 
-                var material1 = new THREE.MeshLambertMaterial( { color: 0xffffff } );
-                var material2 = new THREE.MeshPhongMaterial( { color: 0xff4400, specular: 0x333333, shininess: 100 } );
-                var material3 = new THREE.MeshPhongMaterial( { color: 0x00ff44, specular: 0x333333, shininess: 100 } );
+                var material = new THREE.MeshPhongMaterial();
 
-                callbackModel( geometry, 5, material1, -200, 0, -50, 0, 0 );
-                callbackModel( geometry, 2, material2,  100, 0, 125, 0, 0 );
-                callbackModel( geometry, 2, material3, -100, 0, 125, 0, 0 );
-
-
+                var mesh = new THREE.Mesh( geometry, material );
             }, { useWorker: true } );
             break;
+        case 'json':
+            function createScene( geometry, materials ) {
+                var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
+            }
+            var jsonLoader = new THREE.JSONLoader();
+            jsonLoader.load( settings.meshFile, function( geometry ) { createScene( geometry ) } );
+        case 'jsonbin':
+            function createScene( geometry, materials ) {
+                var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
+            }
 
+            var binLoader = new THREE.BinaryLoader();
+            binLoader.load( settings.meshFile, createScene );
+            break;
         case 'obj':
             var loader = new THREE.OBJMTLLoader();
             loader.callbackProgress = callbackProgress();
@@ -188,7 +195,7 @@ function init(settings) {
 
             var loadFunctionBackup = loader.load;
 
-            loader.load( settings.objFile, settings.mtlFile, onLoad, onProgress);
+            loader.load( settings.meshFile, settings.mtlFile, onLoad, onProgress);
             break;
     }
 
