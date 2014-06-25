@@ -9,6 +9,7 @@ The objective is to create a simple object viewer that can well handle low-rez 3
 
 ## Demo
 Here is a demo that ilustrates the result
+
 [Link to Demo](http://www.ideesculture.com/3d/index.html)
 
 ## Howto 
