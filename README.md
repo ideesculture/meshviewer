@@ -8,7 +8,9 @@ Simple 3D objects file viewer in Three.JS (WebGL)
 The objective is to create a simple object viewer that can well handle low-rez 3d meshes & textures for CollectiveAccess.
 
 ## Demo
-[Click here](http://www.ideesculture.com/3d/index.html) to see a live demo of the 3D mesh viewer
+[Click here](http://www.ideesculture.com/3d/index.html) to see a live demo of the 3D mesh viewer with some OBJ examples.
+
+Just select the example you want to show in the examples menu (on top left)
 
 ## Howto 
 
