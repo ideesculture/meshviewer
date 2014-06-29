@@ -1,5 +1,4 @@
 # 3jsObjViewer
-============
 
 Simple 3D objects file viewer in Three.JS (WebGL)
 
