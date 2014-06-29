@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div class="viewport"></div>
+
+<script src="lib/threejs/three.min.js"></script>
+<script src="lib/threejs/loaders/MTLLoader.js"></script>
+
+<script>
+
+    var container, scene, renderer, camera, light, clock, loader;
+    var WIDTH, HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR;
+
+    container = document.querySelector('.viewport');
+
+    clock = new THREE.Clock();
+
+    WIDTH = window.innerWidth,
+            HEIGHT = window.innerHeight;
+
+    VIEW_ANGLE = 45,
+            ASPECT = WIDTH / HEIGHT,
+            NEAR = 1,
+            FAR = 10000;
+
+    scene = new THREE.Scene();
+
+    renderer = new THREE.WebGLRenderer({antialias: true});
+
+    renderer.setSize(WIDTH, HEIGHT);
+    renderer.shadowMapEnabled = true;
+    renderer.shadowMapSoft = true;
+    renderer.shadowMapType = THREE.PCFShadowMap;
+    renderer.shadowMapAutoUpdate = true;
+
+    container.appendChild(renderer.domElement);
+
+    camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+
+    camera.position.set(0, 100, 300);
+    camera.rotation.x = -Math.PI / 12;
+
+    scene.add(camera);
+
+    light = new THREE.DirectionalLight(0xffffff);
+
+    light.position.set(0, 100, 60);
+    light.castShadow = true;
+    light.shadowCameraLeft = -60;
+    light.shadowCameraTop = -60;
+    light.shadowCameraRight = 60;
+    light.shadowCameraBottom = 60;
+    light.shadowCameraNear = 1;
+    light.shadowCameraFar = 1000;
+    light.shadowBias = -.0001
+    light.shadowMapWidth = light.shadowMapHeight = 1024;
+    light.shadowDarkness = .7;
+
+    scene.add(light);
+
+    var ambientlight = new THREE.AmbientLight( 0x404040 ); // soft white light
+    scene.add( ambientlight);
+
+    var ambient = new THREE.AmbientLight( 0x101030 );
+    scene.add( ambient );
+
+    var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+    directionalLight.position.set( 0, 0, 1 );
+    scene.add( directionalLight );
+
+   //loader = new THREE.JSONLoader();
+    loader = new THREE.ObjectLoader();
+    var mesh;
+    var url='examples/head/sculpt_ascii.js';
+    var mtlurl="examples/head/sculpt.mtl";
+    var loader = new THREE.ObjectLoader();
+    loader.load("examples/cow/mesh.js",
+            function ( object ) {
+                scene.add( object );
+            }
+    );
+
+    function render() {
+        var time = clock.getElapsedTime();
+        //mesh.rotation.y += .01;
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+    }
+</script>
+</body>
+</html>

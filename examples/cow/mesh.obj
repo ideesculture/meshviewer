@@ -9,7 +9,7 @@
 # Faces: 538
 #
 ####
-mtllib ./cow.obj.mtl
+mtllib mesh.mtl
 
 vn 1.186982 5.559112 1.643714
 v 0.505957 0.403624 1.406150
