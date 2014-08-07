@@ -13,7 +13,7 @@
       { "material": "texture_0",
         "attribRange": [0, 25693],
         "codeRange": [205544, 97324, 48534]
-      },
+      }
     ]
   }
 }
