@@ -1,5 +1,8 @@
 /**
- * Created by gautier on 16/06/2014.
+ * ThreeJS object viewer lib
+ * -------------------------
+ * Our objective is to create a JS Library for displaying OBJ files in CollectiveAccess.
+ * This library must be reusable.
  */
 
 var container, stats;
