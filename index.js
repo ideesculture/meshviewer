@@ -184,8 +184,6 @@ function init(settings) {
                 maxsize = width;
                 if(height > maxsize) maxsize=height;
                 if(depth > maxsize) maxsize=depth;
-                console.log(maxsize);
-                console.log(50/maxsize);
 
                 s = 60/maxsize;
 
