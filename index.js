@@ -28,11 +28,13 @@ function init(settings) {
     renderer.setSize( window.innerWidth, window.innerHeight );
 
     scene = new THREE.Scene();
+    scene.fog = new THREE.Fog( 0x000000, 800, 2000 );
 
     // Add axes
     axes = buildAxes( 1000 );
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+    camera.position.z = 800;
 
     controls = new THREE.TrackballControls( camera );
 
@@ -131,8 +133,8 @@ function init(settings) {
 
     /*___________________________________________________________________________
 
-        OBJECT LOADING
-      ___________________________________________________________________________
+     OBJECT LOADING
+     ___________________________________________________________________________
      */
 
     switch (settings.format){
@@ -148,18 +150,35 @@ function init(settings) {
             }, { useWorker: true } );
             break;
         case 'json':
-            function createScene( geometry, materials ) {
-                var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
-            }
+        function createScene( geometry, materials ) {
+            var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
+        }
             var jsonLoader = new THREE.JSONLoader();
             jsonLoader.load( settings.meshFile, function( geometry ) { createScene( geometry ) } );
         case 'jsonbin':
-            function createScene( geometry, materials ) {
-                var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
-            }
+        function createScene( geometry, materials ) {
+            var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
+        }
 
             var binLoader = new THREE.BinaryLoader();
             binLoader.load( settings.meshFile, createScene );
+            break;
+        case 'utf8':
+            var loader = new THREE.UTF8Loader();
+            loader.load( settings.meshFile, function ( object ) {
+                var s = 20;
+                object.scale.set( s, s, s );
+                object.position.x = 0;
+                object.position.y = -125;
+                scene.add( object );
+
+                object.traverse( function( node ) {
+
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+
+                } );
+            }, { normalizeRGB: true } );
             break;
         case 'obj':
             var loader = new THREE.OBJMTLLoader();
@@ -246,9 +265,9 @@ function removePlinth() {
 
 /*  ___________________________________________________________________________
 
-    Object Views
-    ___________________________________________________________________________
-*/
+ Object Views
+ ___________________________________________________________________________
+ */
 
 function showLeft() {
     if (objectCopy !== undefined) objectCopy.rotation.z =  0;
@@ -306,8 +325,8 @@ function showBottom(){
 
 /*  ___________________________________________________________________________
 
-    Object translation
-    ___________________________________________________________________________
+ Object translation
+ ___________________________________________________________________________
  */
 
 function translateRight(){
@@ -352,8 +371,8 @@ function resetObjectPosition(){
 
 /*  ___________________________________________________________________________
 
-    Zoom
-    ___________________________________________________________________________
+ Zoom
+ ___________________________________________________________________________
  */
 
 function zoomIn(){
@@ -366,8 +385,8 @@ function zoomOut(){
 
 /*  ___________________________________________________________________________
 
-    Rotation (Sphere)
-    ___________________________________________________________________________
+ Rotation (Sphere)
+ ___________________________________________________________________________
  */
 
 function rotateRight(){
