@@ -180,24 +180,22 @@ function init(settings) {
                 width = object.bBox.max.x - object.bBox.min.x;
                 height = object.bBox.max.y - object.bBox.min.y;
                 depth = object.bBox.max.z - object.bBox.min.z;
-
+                console.log("width: "+width+" | height: "+height+" | depth: "+depth);
                 maxsize = width;
                 if(height > maxsize) maxsize=height;
                 if(depth > maxsize) maxsize=depth;
 
+                // Computing scale. 60 is an arbitrary ratio
                 s = 60/maxsize;
 
                 object.scale.set( s, s, s );
-                object.position.x = 0;
-                object.position.y = 0;
+
                 scene.add( object );
+                // Moving the scene to put the barycenter at 0,0,0
+                object.translateX(-s * (object.bBox.min.x + (width/2)));
+                object.translateY(-s * (object.bBox.min.y + (height/2)));
+                object.translateZ(-s * (object.bBox.min.z + (depth/2)));
 
-                object.traverse( function( node ) {
-
-                    node.castShadow = true;
-                    node.receiveShadow = true;
-
-                } );
             }, { normalizeRGB: true } );
             break;
         case 'obj':
