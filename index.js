@@ -28,7 +28,7 @@ function init(settings) {
     renderer.setSize( window.innerWidth, window.innerHeight );
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.Fog( 0x000000, 800, 2000 );
+    //scene.fog = new THREE.Fog( 0x000000, 800, 2000 );
 
     // Add axes
     axes = buildAxes( 1000 );
@@ -169,7 +169,7 @@ function init(settings) {
                 var s = 20;
                 object.scale.set( s, s, s );
                 object.position.x = 0;
-                object.position.y = -125;
+                object.position.y = 0;
                 scene.add( object );
 
                 object.traverse( function( node ) {
