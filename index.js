@@ -169,7 +169,26 @@ function init(settings) {
         case 'utf8':
             var loader = new THREE.UTF8Loader();
             loader.load( settings.meshFile, function ( object ) {
-                var s = 20;
+
+                // Computing bounding box for object : http://stackoverflow.com/questions/11782113/how-to-compute-bounding-box-after-using-objloader-three-js
+                object.traverse(function ( child ) {
+                    if ( child instanceof THREE.Mesh ) {
+                        child.geometry.computeBoundingBox();
+                        object.bBox = child.geometry.boundingBox;
+                    }
+                });
+                width = object.bBox.max.x - object.bBox.min.x;
+                height = object.bBox.max.y - object.bBox.min.y;
+                depth = object.bBox.max.z - object.bBox.min.z;
+
+                maxsize = width;
+                if(height > maxsize) maxsize=height;
+                if(depth > maxsize) maxsize=depth;
+                console.log(maxsize);
+                console.log(50/maxsize);
+
+                s = 60/maxsize;
+
                 object.scale.set( s, s, s );
                 object.position.x = 0;
                 object.position.y = 0;
