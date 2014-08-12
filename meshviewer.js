@@ -18,9 +18,10 @@ var windowHalfY = window.innerHeight / 2;
 
 var timer, weight;
 
+
+
 function meshviewer(settings){
-    init(settings);
-    animate(settings);
+    size_verif(settings);
 }
 
 function init(settings) {
@@ -141,31 +142,6 @@ function init(settings) {
      */
 
     switch (settings.format){
-        case 'ctm':
-            var loader = new THREE.CTMLoader();
-            loader.load( settings.meshFile,   function( geometry ) {
-
-                console.log(settings.meshFile);
-
-                var material = new THREE.MeshPhongMaterial();
-
-                var mesh = new THREE.Mesh( geometry, material );
-            }, { useWorker: true } );
-            break;
-        case 'json':
-        function createScene( geometry, materials ) {
-            var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
-        }
-            var jsonLoader = new THREE.JSONLoader();
-            jsonLoader.load( settings.meshFile, function( geometry ) { createScene( geometry ) } );
-        case 'jsonbin':
-        function createScene( geometry, materials ) {
-            var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
-        }
-
-            var binLoader = new THREE.BinaryLoader();
-            binLoader.load( settings.meshFile, createScene );
-            break;
         case 'utf8':
             var loader = new THREE.UTF8Loader();
             loader.load( settings.meshFile, function ( object ) {
@@ -488,6 +464,47 @@ function rotateOn(){
 
 function rotateOff(){
     rotate = false;
+}
+
+
+function size_verif(settings){
+    var mesh = settings.meshFile;
+
+    var xhr = $.ajax({
+        type: "HEAD",
+        url: settings.meshFile,
+        success: function(msg){
+            var size = xhr.getResponseHeader('Content-Length');
+
+            size = parseInt(size);
+
+            var limit = 20*1024*1024; // 20 MB
+
+            console.log("size = " + size);
+            console.log("limit = " +limit);
+
+            if(size < limit){
+                init(settings);
+                animate(settings);
+            }else{
+                if(confirm("The requested file's size is over "+ getReadableFileSizeString(size) +" \nLoading this object can take a while. \nAre you sure you want to load it ?")){
+                    init(settings);
+                    animate(settings);
+                }
+            }
+        }
+    });
+}
+
+function getReadableFileSizeString(fileSizeInBytes) {
+    var i = -1;
+    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+    do {
+        fileSizeInBytes = fileSizeInBytes / 1024;
+        i++;
+    } while (fileSizeInBytes > 1024);
+
+    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
 }
 
 
