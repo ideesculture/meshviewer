@@ -470,6 +470,10 @@ function rotateOff(){
 function size_verif(settings){
     var mesh = settings.meshFile;
 
+    // Configurable limits with sensible defaults
+    var warnLimit = settings.warnFileSize || 20*1024*1024; // Default: warn at 20 MB
+    var hardLimit = settings.maxFileSize || 50*1024*1024; // Default: hard limit at 50 MB
+
     var xhr = $.ajax({
         type: "HEAD",
         url: settings.meshFile,
@@ -478,19 +482,23 @@ function size_verif(settings){
 
             size = parseInt(size);
 
-            var limit = 20*1024*1024; // 20 MB
-
             console.log("size = " + size);
-            console.log("limit = " +limit);
+            console.log("warnLimit = " + warnLimit);
+            console.log("hardLimit = " + hardLimit);
 
-            if(size < limit){
-                init(settings);
-                animate(settings);
-            }else{
-                if(confirm("The requested file's size is over "+ getReadableFileSizeString(size) +" \nLoading this object can take a while. \nAre you sure you want to load it ?")){
+            if(size > hardLimit){
+                // File exceeds hard limit - do not load to prevent browser crash
+                alert("Cannot load file: The file size (" + getReadableFileSizeString(size) + ") exceeds the maximum allowed limit (" + getReadableFileSizeString(hardLimit) + ").\n\nLoading files this large may crash your browser.\n\nYou can increase the 'maxFileSize' setting if you wish to attempt loading larger files.");
+                return;
+            } else if(size > warnLimit){
+                // File exceeds warning limit - ask user for confirmation with clear warning
+                if(confirm("WARNING: Large file detected!\n\nFile size: " + getReadableFileSizeString(size) + "\nRecommended limit: " + getReadableFileSizeString(warnLimit) + "\n\nLoading large 3D models may:\n- Take a long time to load\n- Make your browser unresponsive\n- Potentially crash your browser tab\n\nDo you want to continue loading?")){
                     init(settings);
                     animate(settings);
                 }
+            } else {
+                init(settings);
+                animate(settings);
             }
         }
     });
